@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define LIMITE 100
+#define LIMITE 100 // 100 bytes
 
 int main(void)
 {
@@ -18,7 +18,21 @@ int main(void)
     return 1;
   }
 
-  size_t comprimento = strcspn(frase, "\n");
+  /*
+  fgets - saves the text and the Enter
+  sizeof - the buffer's size in bytes
+  fgets - read at 99 characters and add \0, he read the spaces too.
+  == NULL (null pointer constant) - checks for failuere
+  */
+
+  size_t comprimento = strcspn(frase, "\n"); // strcspn(where should we look, when we find this stop)
+
+  /*
+  size_t (a type)- is na unsigned integer type used for sizes and lenghts.
+  The correct and safe way to store memory sizes in C (an integer that will never be negative)
+  strcspn (String Complementary Span) - It iterates through the "phrase" tring from start to finish
+  and counts the characters untir it finds the \n character
+  */
 
   if (frase[comprimento] != '\n')
   {
@@ -26,17 +40,33 @@ int main(void)
     return 1;
   }
 
-  frase[comprimento] = '\0';
+  /* 98 tet bytes + 1 newline + 1 terminator */
+
+  frase[comprimento] = '\0'; // Substitute \n (Enter), avoid “123\n” != "123" errors
+
+  /*
+  Remove the newline
+  \n - newline (character)
+  \0 - end of a C string
+  */
 
   for (int i = 0; frase[i] != '\0'; i++)
   {
-    if (frase[i] == ' ' &&
-        (i == 0 || frase[i + 1] == ' ' || frase[i + 1] == '\0'))
+    if (frase[i] == ' ' &&                                       // Beginning (frase[i] == ' ' && i == 0);
+        (i == 0 || frase[i + 1] == ' ' || frase[i + 1] == '\0')) // Followd by another space (frase[i] == ' ' && frase[i + 1] == ' ' )
+                                                                 // At the end, immediately before \0 (frase[i] == ' ' && frase[i + 1] == \0)
     {
       printf("Use apenas um espaco entre palavras.\n");
       return 1;
     }
   }
+
+  /*
+  The condition rejects a space when it is:
+    - At the beginning
+    - Follew by another space
+    - At the end, immediately before \0
+  */
 
   char *palavra = strtok(frase, " ");
 
