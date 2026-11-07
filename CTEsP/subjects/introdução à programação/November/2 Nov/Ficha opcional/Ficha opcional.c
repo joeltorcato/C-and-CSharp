@@ -1,38 +1,39 @@
 #include <stdio.h>
 #include <string.h>
 
-#define LIMITE 150 // DRY
+#define LIMITE 100
 
-int main()
+int main(void)
 {
   char frase[LIMITE];
-  char unicas[LIMITE][LIMITE]; // Two-dimensional array
+  char unicas[LIMITE][LIMITE];
   int ordem[LIMITE];
   int quantidadeUnicas = 0;
   int quantidadePalavras = 0;
 
   printf("Insira uma frase: ");
 
-  if (fgets(frase, sizeof frase, stdin) == NULL) // Quetions - That mean if the user don't put any word the program done?
-  {                                              // What mena sizeof
-    return 1;
-  }
-
-  size_t comprimento = strcspn(frase, "\n"); // What mean size_t and strcspn
-
-  if (frase[comprimento] == '\0')
+  if (fgets(frase, sizeof frase, stdin) == NULL)
   {
-    printf("Introduza até 98 bytes e termine com Enter.\n");
     return 1;
   }
 
-  frase[comprimento = '\0'];
+  size_t comprimento = strcspn(frase, "\n");
+
+  if (frase[comprimento] != '\n')
+  {
+    printf("Introduza ate 98 bytes e termine com Enter.\n");
+    return 1;
+  }
+
+  frase[comprimento] = '\0';
 
   for (int i = 0; frase[i] != '\0'; i++)
   {
-    if (frase[i] == ' ' && (i == 0 || frase[i + 1] == ' ' || frase[i + 1] == '\0'))
+    if (frase[i] == ' ' &&
+        (i == 0 || frase[i + 1] == ' ' || frase[i + 1] == '\0'))
     {
-      printf("Use apenas um espaço entre palavras.\n");
+      printf("Use apenas um espaco entre palavras.\n");
       return 1;
     }
   }
@@ -65,7 +66,7 @@ int main()
     palavra = strtok(NULL, " ");
   }
 
-  printf("\nPalavras únicas:\n");
+  printf("\nPalavras unicas:\n");
 
   for (int i = 0; i < quantidadeUnicas; i++)
   {
@@ -83,7 +84,7 @@ int main()
 
   memset(frase, 0, sizeof frase);
 
-  printf("\nString base destruída: \"%s\"\n", frase);
+  printf("\nString base destruida: \"%s\"\n", frase);
 
   for (int i = 0; i < quantidadePalavras; i++)
   {
@@ -91,8 +92,11 @@ int main()
     {
       strcat(frase, " ");
     }
+
+    strcat(frase, unicas[ordem[i]]);
   }
-  printf("\nFrase resconstruída: %s\n", frase);
+
+  printf("\nFrase reconstruida: %s\n", frase);
 
   return 0;
 }
