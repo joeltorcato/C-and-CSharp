@@ -70,40 +70,56 @@ int main(void)
 
   char *palavra = strtok(frase, " ");
 
-  while (palavra != NULL)
+  /*
+  char * - declares a pointer to a character
+  strtok - separates a string into tokens, pieces separated by specified delimiter
+  characters. The delimiter here is a space
+  */
+
+  while (palavra != NULL) // continues as long as the pointer identifies a word
   {
-    int indice = -1;
+    int indice = -1; // It begins searching for the word on the assumption that it will not be found
 
     for (int i = 0; i < quantidadeUnicas; i++)
     {
-      if (strcmp(unicas[i], palavra) == 0)
+      if (strcmp(unicas[i], palavra) == 0) // strcmp (String Compare), if devolves 0, the strings are iquals.
       {
-        indice = i;
+        indice = i; // Save the dictionry index
         break;
       }
     }
 
     if (indice == -1)
     {
-      strcpy(unicas[quantidadeUnicas], palavra);
-      indice = quantidadeUnicas;
+      strcpy(unicas[quantidadeUnicas], palavra); // Copy the text of the current word to the next avaliable position in the unicas list
+      indice = quantidadeUnicas;                 // Position that was just saves
       quantidadeUnicas++;
     }
 
-    ordem[quantidadePalavras] = indice;
+    /*
+    strcpy (destination, origin)
+    */
+
+    ordem[quantidadePalavras] = indice; // Store the exact position of the word (wheter it's new or a repeat) in an arry called ordem.
     quantidadePalavras++;
 
-    palavra = strtok(NULL, " ");
+    palavra = strtok(NULL, " "); // Makes the program advance word by word (Continue processing the previous string from where you stopped)
   }
 
   printf("\nPalavras unicas:\n");
+  /*
+    Palavras unicas:
+    0: eu
+    1: gosto
+    2: de
+  */
 
   for (int i = 0; i < quantidadeUnicas; i++)
   {
     printf("%d: %s\n", i, unicas[i]);
   }
 
-  printf("\nIndices guardados:");
+  printf("\nIndices guardados:"); // Indices guardados: 0 1 2 0
 
   for (int i = 0; i < quantidadePalavras; i++)
   {
@@ -112,18 +128,18 @@ int main(void)
 
   printf("\n");
 
-  memset(frase, 0, sizeof frase);
+  memset(frase, 0, sizeof frase); // fills a specified number of bytes with a value (Clears the "phrase" variable filling it with 0)
 
-  printf("\nString base destruida: \"%s\"\n", frase);
+  printf("\nString base destruida: \"%s\"\n", frase); // \ Protects the code \
 
   for (int i = 0; i < quantidadePalavras; i++)
   {
-    if (i > 0)
+    if (i > 0) // The space is only added starting with the second word
     {
-      strcat(frase, " ");
+      strcat(frase, " "); // strcat - String Concatenate
     }
 
-    strcat(frase, unicas[ordem[i]]);
+    strcat(frase, unicas[ordem[i]]); // strcat (destination, origin)
   }
 
   printf("\nFrase reconstruida: %s\n", frase);
